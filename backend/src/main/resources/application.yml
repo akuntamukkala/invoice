@@ -11,3 +11,6 @@ spring:
     url: jdbc:mysql://localhost/invoice?autoReconnect=true&useSSL=false
     username: invoice-user
     password: perfectapp123
+    max-active: 2
+    initial-size: 1
+    maximumPoolSize: 2
