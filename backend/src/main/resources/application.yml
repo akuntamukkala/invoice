@@ -1,0 +1,13 @@
+---
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: none
+    database: MYSQL
+
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost/invoice?autoReconnect=true&useSSL=false
+    username: invoice-user
+    password: perfectapp123

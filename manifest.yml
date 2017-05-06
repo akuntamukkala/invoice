@@ -1,0 +1,4 @@
+applications:
+- name: invoice
+  random-route: false
+  memory: 512M
