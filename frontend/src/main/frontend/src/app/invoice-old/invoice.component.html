@@ -1,0 +1,76 @@
+
+    <hr/>
+    <div class="jumbotron">
+        <div class="container-fluid">
+        <div class="row">
+          <table class="table table-hover table-bordered">
+              <tr><td class="col-xs-2">Name</td><td><input placeholder="Please enter your name" type="text" [(ngModel)]="invoiceDTO.name" name="invoiceDTO.name" class="form-control"/></td></tr>
+              <tr><td class="col-xs-2">Email</td><td><input placeholder="Please enter your email" type="text" [(ngModel)]="invoiceDTO.email" name="invoiceDTO.email" class="form-control"/></td></tr>
+              <tr><td class="col-xs-2">Note</td><td><input placeholder="Please enter note" type="text" [(ngModel)]="invoiceDTO.note" name="invoiceDTO.note" class="form-control"/></td></tr>
+              
+              <tr>
+              <td>Invoice Date:</td>
+                    <td>
+                        <datepicker></datepicker>
+              </tr>
+          </table>
+        </div>
+        
+      </div>
+      <hr>  
+    <form class="form-group">
+      <div class="container-fluid">
+        <div class="row">
+          <table class="table table-hover table-bordered">
+              <tr><td class="col-xs-2">Media Type</td><td><input placeholder="CD, Book, DVD, LPK, MTB, Other" type="text" [(ngModel)]="mediaType" name="mediaType" class="form-control"/></td></tr>
+              <tr><td class="col-xs-2">Code</td><td><input placeholder="Enter item code" type="text" [(ngModel)]="code" name="code" class="form-control"/></td></tr>
+              <tr><td class="col-xs-2">Title</td><td><input placeholder="Enter title" type="text" [(ngModel)]="title" name="title" class="form-control"/></td></tr>
+              <tr><td class="col-xs-2">Quantity</td><td><input type="text" [(ngModel)]="quantity" name="quantity" class="form-control"/></td> </tr>
+              <tr><td class="col-xs-2">Price(USD)</td><td><input type="text" [(ngModel)]="price" name="price" class="form-control"/></td>    </tr>
+          </table>
+        </div>
+        
+      </div>
+      <div class="col-xs-2">
+          <input type="button" (click)="addInvoiceItem()" value="Add Item" class="btn btn-primary">
+        </div>
+    </form>
+    <br>
+    <br>
+
+
+  <div *ngIf="invoiceDTO.invoiceItems.length > 0">
+    <table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+             <th class="col-xs-1">Media Type</th>
+             <th class="col-xs-1">Code</th>
+             <th class="col-xs-3">Title</th>
+             <th class="col-xs-1">Quantity</th>
+             <th class="col-xs-1">Price(USD)</th>
+             <th class="col-xs-1">Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let invoiceItem of invoiceDTO.invoiceItems; let i = index">
+            <td class="col-xs-1">{{invoiceItem.mediaType}}</td>
+            <td class="col-xs-1">{{invoiceItem.code}}</td>
+            <td class="col-xs-3">{{invoiceItem.title}}</td>
+            <td class="col-xs-1">{{invoiceItem.quantity}}</td>
+            <td class="col-xs-1"> {{invoiceItem.price}}</td>
+            <td class="col-xs-1"><button class="btn btn-primary" (click)="removeInvoiceItem(event, i)">Remove</button></td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+<p class="text-xs-right"></p>
+
+<div class="row ">
+   <div class="container-fluid">
+    <div class="col-xs-3"><input type="button" [disabled]="!isValid()" (click)="generateInvoice()" value="Generate Invoice" class="btn btn-primary"></div>
+    <div class="col-xs-3">Total Invoice = $ {{totalInvoiceAmount}}</div>
+    <div class="col-xs-6"><div *ngIf="generatedInvoiceID != ''">Invoice ID {{generatedInvoiceID}} created successfully</div></div>
+    
+   </div>
+</div>
+</div>

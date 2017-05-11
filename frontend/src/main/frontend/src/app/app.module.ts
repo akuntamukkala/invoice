@@ -16,7 +16,8 @@ import {routeConfig} from "./routes/route-config";
     AppComponent,
     InvoiceComponent,
     GeneratedInvoiceComponent,
-    GeneratedInvoiceComponent
+    GeneratedInvoiceComponent,
+    InvoiceComponent
 
   ],
   imports: [

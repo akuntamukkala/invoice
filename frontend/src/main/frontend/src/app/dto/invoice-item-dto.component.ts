@@ -1,4 +1,4 @@
-export interface InvoiceItem {
+export class InvoiceItem {
   mediaType : string; 
   code : string;
   quantity : number;

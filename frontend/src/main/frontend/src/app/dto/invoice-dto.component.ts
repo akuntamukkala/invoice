@@ -1,6 +1,6 @@
 import {InvoiceItem} from './invoice-item-dto.component';
 
-export interface InvoiceDTO  {
+export class InvoiceDTO  {
   id : number;
   name : string;
   email : string;

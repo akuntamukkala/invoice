@@ -1,76 +1,290 @@
+<div class="container">
 
-    <hr/>
-    <div class="jumbotron">
-        <div class="container-fluid">
-        <div class="row">
-          <table class="table table-hover table-bordered">
-              <tr><td class="col-xs-2">Name</td><td><input placeholder="Please enter your name" type="text" [(ngModel)]="invoiceDTO.name" name="invoiceDTO.name" class="form-control"/></td></tr>
-              <tr><td class="col-xs-2">Email</td><td><input placeholder="Please enter your email" type="text" [(ngModel)]="invoiceDTO.email" name="invoiceDTO.email" class="form-control"/></td></tr>
-              <tr><td class="col-xs-2">Note</td><td><input placeholder="Please enter note" type="text" [(ngModel)]="invoiceDTO.note" name="invoiceDTO.note" class="form-control"/></td></tr>
+    <form #invoiceForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="invoiceFormActive"  >
+      <div class="jumbotron rounded">
+      <div class="form-group">
+        <label for="name">Name</label>
+
+        <input type="text" id="name" class="form-control"
+              required minlength="4" maxlength="30"
+               name="name" [(ngModel)]="invoiceDTO.name" 
+               #name="ngModel" placeholder="Please enter purchaser's name" >
+        <div *ngIf="name.errors && (name.dirty || name.touched)"
+             class="alert alert-danger">
+            <div [hidden]="!name.errors.required">
+              Name is required
+            </div>
+            <div [hidden]="!name.errors.minlength">
+              Name must be at least 4 characters long.
+            </div>
+            <div [hidden]="!name.errors.maxlength">
+              Name cannot be more than 30 characters long.
+            </div>
+        </div>        
+       
+      </div>
+
+  <div class="form-group">
+        <label for="email">Email</label>
+
+        <input type="text" id="email" class="form-control"
+              required minlength="4" maxlength="30"
+               name="email" [(ngModel)]="invoiceDTO.email" 
+               #email="ngModel" placeholder="Please enter purchaser's email" >
+        <div *ngIf="email.errors && (email.dirty || email.touched)"
+             class="alert alert-danger">
+            <div [hidden]="!email.errors.required">
+              Email is required
+            </div>
+            <div [hidden]="!email.errors.minlength">
+              Email must be at least 4 characters long.
+            </div>
+            <div [hidden]="!email.errors.maxlength">
+              Email cannot be more than 30 characters long.
+            </div>
+        </div>        
+       
+      </div>
+
+      <div class="form-group">
+        <label for="note">Note</label>
+
+        <input type="text" id="note" class="form-control"
+                maxlength="50"
+               name="note" [(ngModel)]="invoiceDTO.note" 
+               #note="ngModel" placeholder="Please enter note" >
+        <div *ngIf="note.errors"
+             class="alert alert-danger">
+           
+            <div [hidden]="!note.errors.maxlength">
+              Note cannot be more than 50 characters long.
+            </div>
+        </div>        
+       
+      </div>
+
+        <div class="form-group">
+        <label for="date">Date</label>
+        <datepicker name="date" [(ngModel)]="invoiceDTO.invoiceDate" ></datepicker>
+      </div>
+      </div>
+
+    <form #invoiceItemForm="ngForm"  novalidate *ngIf="invoiceItemFormActive" >
+    <div class="jumbotron rounded">
+       
+         <div class="form-group">
+            <label for="mediaType">Media Type</label>
+
+            <input type="text" id="mediatype" class="form-control"
+                  required maxlength="20"
+                  name="mediatype" [(ngModel)]="mediaType" 
+                  #mediatype="ngModel" placeholder="CD, Book, DVD, LPK, MTB, Other">
+
+              <div *ngIf="mediatype.errors && (mediatype.dirty || mediatype.touched)"
+                class="alert alert-danger">
+                <div [hidden]="!mediatype.errors.required">
+                  Media Type is required
+                </div>
               
-              <tr>
-              <td>Invoice Date:</td>
-                    <td>
-                        <datepicker></datepicker>
-              </tr>
-          </table>
-        </div>
-        
-      </div>
-      <hr>  
-    <form class="form-group">
-      <div class="container-fluid">
+                <div [hidden]="!mediatype.errors.maxlength">
+                  Media Type cannot be more than 20 characters long.
+                </div>
+              </div>  
+         </div>
+
+        <div class="form-group">
+            <label for="itemcode">Code</label>
+
+            <input type="text" id="itemcode" class="form-control"
+                  required maxlength="10"
+                  name="itemcode" [(ngModel)]="code" 
+                  #itemcode="ngModel" placeholder="Enter item code">
+
+              <div *ngIf="itemcode.errors && (itemcode.dirty || itemcode.touched)"
+                class="alert alert-danger">
+                <div [hidden]="!itemcode.errors.required">
+                  Code is required
+                </div>
+              
+                <div [hidden]="!itemcode.errors.maxlength">
+                  Code cannot be more than 10 characters long.
+                </div>
+              </div>  
+         </div>
+
+        <div class="form-group">
+            <label for="itemtitle">Title</label>
+
+            <input type="text" id="itemtitle" class="form-control"
+                  required maxlength="100"
+                  name="itemtitle" [(ngModel)]="title" 
+                  #itemtitle="ngModel" placeholder="Enter item title">
+
+              <div *ngIf="itemtitle.errors && (itemtitle.dirty || itemtitle.touched)"
+                class="alert alert-danger">
+                <div [hidden]="!itemtitle.errors.required">
+                  Title is required
+                </div>
+              
+                <div [hidden]="!itemtitle.errors.maxlength">
+                  Title cannot be more than 100 characters long.
+                </div>
+              </div>  
+         </div>
+         <div class="form-group">
+            <label for="itemqty">Quantity</label>
+
+            <input type="text" id="itemqty" class="form-control"
+                  required maxlength="10" pattern="^\d+$"
+                  name="itemqty" [(ngModel)]="quantity" 
+                  #itemqty="ngModel" placeholder="Enter item quantity">
+
+              <div *ngIf="itemqty.errors && (itemqty.dirty || itemqty.touched)"
+                class="alert alert-danger">
+                <div [hidden]="!itemqty.errors.required">
+                  Quantity is required
+                </div>
+                 <div [hidden]="!itemqty.errors.pattern">
+                  Quantity is an integer value > 0
+                </div>
+              
+                <div [hidden]="!itemqty.errors.maxlength">
+                  Quantity cannot be more than 100 characters long.
+                </div>
+              </div>  
+         </div>
+
+         <div class="form-group">
+            <label for="itemprice">Price(USD)  per each item</label>
+
+            <input type="text" id="itemprice" class="form-control"
+                  required maxlength="10" pattern="^\d+(\.\d{1,2})?$"
+                  name="itemprice" [(ngModel)]="price" 
+                  #itemprice="ngModel" placeholder="Enter item price/unit">  
+
+              <div *ngIf="itemprice.errors && (itemprice.dirty || itemprice.touched)"
+                class="alert alert-danger">
+                <div [hidden]="!itemprice.errors.required">
+                  Price is required
+                </div>
+                 <div [hidden]="!itemprice.errors.pattern">
+                  Price is an integer value > 0
+                </div>
+              
+                <div [hidden]="!itemprice.errors.maxlength">
+                  Price cannot be more than 10 characters long.
+                </div>
+              </div>  
+         </div>
+
         <div class="row">
-          <table class="table table-hover table-bordered">
-              <tr><td class="col-xs-2">Media Type</td><td><input placeholder="CD, Book, DVD, LPK, MTB, Other" type="text" [(ngModel)]="mediaType" name="mediaType" class="form-control"/></td></tr>
-              <tr><td class="col-xs-2">Code</td><td><input placeholder="Enter item code" type="text" [(ngModel)]="code" name="code" class="form-control"/></td></tr>
-              <tr><td class="col-xs-2">Title</td><td><input placeholder="Enter title" type="text" [(ngModel)]="title" name="title" class="form-control"/></td></tr>
-              <tr><td class="col-xs-2">Quantity</td><td><input type="text" [(ngModel)]="quantity" name="quantity" class="form-control"/></td> </tr>
-              <tr><td class="col-xs-2">Price(USD)</td><td><input type="text" [(ngModel)]="price" name="price" class="form-control"/></td>    </tr>
-          </table>
+          <div class="col-xs-4">
+            <button [disabled]="!invoiceItemForm.form.valid" type="button" class="btn btn-primary" (click)="addInvoiceItem()">Add Item</button>
+          </div>
+          <div class="col-xs-4">
+            <button type="button" class="btn btn-primary"
+                    [disabled]="!isValid()" (click)="generateInvoice()">Create Invoice</button>
+          </div>
+          <div class="col-xs-4">
+            <button type="button" class="btn btn-primary"
+                     (click)="resetForm()">Reset Invoice</button>
+          </div>
+          <div class="col-xs-10">
+            <h4>Total Invoice : {{ totalInvoiceAmount | currency:'USD':true }}</h4>
+          </div>
         </div>
-        
+                   
       </div>
-      <div class="col-xs-2">
-          <input type="button" (click)="addInvoiceItem()" value="Add Item" class="btn btn-primary">
-        </div>
-    </form>
-    <br>
-    <br>
+      </form>
 
-
+       <div *ngIf="generatedInvoiceID != '' ">
+          <div class="jumbotron">
+            <div class="row">
+              <div class="col-xs-2">
+                <h4>Invoice Created Successfully</h4>
+              </div>
+              <div class="col-xs-4">
+                <h4>{{generatedInvoiceID}}</h4>
+              </div>
+            </div>
+          </div>
+       </div>
   <div *ngIf="invoiceDTO.invoiceItems.length > 0">
-    <table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-             <th class="col-xs-1">Media Type</th>
-             <th class="col-xs-1">Code</th>
-             <th class="col-xs-3">Title</th>
-             <th class="col-xs-1">Quantity</th>
-             <th class="col-xs-1">Price(USD)</th>
-             <th class="col-xs-1">Remove</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let invoiceItem of invoiceDTO.invoiceItems; let i = index">
-            <td class="col-xs-1">{{invoiceItem.mediaType}}</td>
-            <td class="col-xs-1">{{invoiceItem.code}}</td>
-            <td class="col-xs-3">{{invoiceItem.title}}</td>
-            <td class="col-xs-1">{{invoiceItem.quantity}}</td>
-            <td class="col-xs-1"> {{invoiceItem.price}}</td>
-            <td class="col-xs-1"><button class="btn btn-primary" (click)="removeInvoiceItem(event, i)">Remove</button></td>
-        </tr>
-    </tbody>
-  </table>
-</div>
-<p class="text-xs-right"></p>
-
-<div class="row ">
-   <div class="container-fluid">
-    <div class="col-xs-3"><input type="button" [disabled]="!isValid()" (click)="generateInvoice()" value="Generate Invoice" class="btn btn-primary"></div>
-    <div class="col-xs-3">Total Invoice = $ {{totalInvoiceAmount}}</div>
-    <div class="col-xs-6"><div *ngIf="generatedInvoiceID != ''">Invoice ID {{generatedInvoiceID}} created successfully</div></div>
     
-   </div>
-</div>
+    
+        <div *ngFor="let invoiceItem of invoiceDTO.invoiceItems; let i = index">
+        <div class="jumbotron">
+            <div class="row">
+              <div class="col-xs-2">
+                <h4>MediaType</h4>
+              </div>
+              <div class="col-xs-3">
+                
+              </div>
+              <div class="col-xs-4">
+                <h4>{{invoiceItem.mediaType}}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2">
+                <h4>Code</h4>
+              </div>
+              <div class="col-xs-3">
+                
+              </div>
+              <div class="col-xs-4">
+                <h4>{{invoiceItem.code}}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2">
+                <h4>Title</h4>
+              </div>
+              <div class="col-xs-3">
+                
+              </div>
+              <div class="col-xs-4">
+                <h4>{{invoiceItem.title}}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2">
+                <h4>Price (USD) per item</h4>
+              </div>
+              <div class="col-xs-3">
+                
+              </div>
+              <div class="col-xs-4">
+                <h4>{{invoiceItem.price}}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-2">
+                <h4>Quantity</h4>
+              </div>
+              <div class="col-xs-3">
+                
+              </div>
+              <div class="col-xs-4">
+                <h4>{{invoiceItem.quantity}}</h4>
+              </div>
+            </div>  
+            <div class="row">
+              <div class="col-xs-2">
+                <button class="btn btn-primary" (click)="removeInvoiceItem(event, i)">Remove Item</button>
+              </div>
+            </div>  
+
+            
+          </div>                      
+        </div>
+ 
+  </div>
+
+
+     
+    
+    
+    
+    </form>
 </div>

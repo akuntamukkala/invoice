@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import 'rxjs/add/operator/map';
-import {DatepickerModule} from 'ng2-bootstrap';
-import * as moment from 'moment';
+import { Component, AfterViewChecked, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { InvoiceDTO } from '../dto/invoice-dto.component';
 import { InvoiceItem } from '../dto/invoice-item-dto.component';
+import {DatepickerModule} from 'ng2-bootstrap';
+import * as moment from 'moment';
 import { InvoiceServiceService } from '../services/invoice-service.service';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 
 @Component({
@@ -15,54 +13,63 @@ import { InvoiceServiceService } from '../services/invoice-service.service';
   templateUrl: './invoice.component.html',
   providers: [InvoiceServiceService]
 })
-
-@Injectable()
 export class InvoiceComponent implements OnInit {
 
-  invoiceDTO : any;
-  
-  //name = "";
-  //email = "";
-  //invoiceDate = "";
+  invoiceDTO: InvoiceDTO;
 
-  //rows = [];
+  invoiceFormActive = true;
+  invoiceItemFormActive = true;
 
-  mediaType = ""; 
-  quantity = 0;
-  title = "";
-  price = 0.00;
-  message = '';
-  code = '';
+  mediaType : string; 
+  quantity : number;
+  title : string;
+  price : number;
+  code : string;
 
-  totalInvoiceAmount = "0.00";
-  generatedInvoiceID = "";
 
-  constructor(private http: Http, private  invoiceService: InvoiceServiceService) { 
+  totalInvoiceAmount : string;
+  generatedInvoiceID : string;
 
-    this.invoiceDTO =  {
-    name : '',
-    email : '',
-    note : '',
-    status : 'Y',
-    invoiceDate : new Date(),
-    invoiceItems : []
-  };
+  invoiceItemForm: NgForm;
+
+  constructor(private  invoiceService: InvoiceServiceService) { 
+    this.initInvoiceFields();
+
   }
 
-  ngOnInit() {
+  initInvoiceFields() {
+    this.invoiceDTO = new InvoiceDTO();
+    this.invoiceDTO.name = '';
+    this.invoiceDTO.email = '';
+    this.invoiceDTO.note='';
+    this.invoiceDTO.status='Y';
+    this.invoiceDTO.invoiceDate = new Date();
+    this.invoiceDTO.invoiceItems = [];
+
+    this.initInvoiceItemFields();
+    this.totalInvoiceAmount = '0';
+    this.generatedInvoiceID = '';
   }
 
+  initInvoiceItemFields() {
 
-
-  addInvoiceItem() {
-
-    this.invoiceDTO.invoiceItems.push({mediaType: this.mediaType, code: this.code, quantity : this.quantity, title : this.title, price : this.price });
     this.mediaType = '';
     this.quantity = 0;
     this.title = '';
     this.price = 0.00;
     this.code = '';
+
+  }
+  ngOnInit() {
+  }
+
+  addInvoiceItem() {
+
+    this.invoiceDTO.invoiceItems.push({mediaType: this.mediaType, code: this.code, quantity : this.quantity, title : this.title, price : this.price });
+    this.initInvoiceItemFields();
     this.invoiceService.getTotalInvoiceAmount(this.invoiceDTO.invoiceItems).subscribe(res => this.totalInvoiceAmount = res);
+    this.invoiceItemFormActive = false;
+    setTimeout(() => this.invoiceItemFormActive = true, 0);
   }
 
   removeInvoiceItem(event, i) {
@@ -75,12 +82,14 @@ export class InvoiceComponent implements OnInit {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let body = JSON.stringify(this.invoiceDTO);
-    alert(body);
-    //generateInvoice
     this.invoiceService.generateInvoice(this.invoiceDTO).subscribe(res => this.generatedInvoiceID =  res);
-    //this.invoiceService.test().subscribe(res => this.setMessage(res));
+    
+  }
 
-
+  resetForm() {
+    this.initInvoiceFields();
+    this.invoiceFormActive = false;
+    setTimeout(() => this.invoiceFormActive = true, 0);
   }
 
   isValid() {
@@ -90,8 +99,8 @@ export class InvoiceComponent implements OnInit {
 
     return false;
   }
-  setMessage(res: string) {
-    this.message = res;
-  }
+
+  
+
 
 }

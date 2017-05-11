@@ -1,64 +1,156 @@
- <hr/>
- <div class = "jumbotron">
- <div class="container-fluid">
 
-   <div class="row">
-          <table class="table table-hover table-bordered">
-              <tr>
-                <td class="col-xs-2">Name</td>
-                <td><input #invoiceIdBox placeholder="Please enter invoice Id" type="text" (keyup.enter)="search(invoiceId)"  [(ngModel)]="invoiceId" name="invoiceId" class="form-control"/></td>
-                <td><input type="button" (click)="search(invoiceId)" value="Search" class="btn btn-primary"></td>
-              </tr>
-          </table>
-        </div>
-  </div>
-  <div *ngIf="invoiceDTO.id > 0">
-    <table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-             <th class="col-xs-1">Name</th>
-             <th class="col-xs-1">Email</th>
-             <th class="col-xs-2">Note</th>
-             <th class="col-xs-1">Date</th>
-             <th class="col-xs-1">Total</th>
-             <th class="col-xs-1">Item Details</th>
-             <th class="col-xs-1">Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="col-xs-1">{{invoiceDTO.name}}</td>
-            <td class="col-xs-1">{{invoiceDTO.email}}</td>
-            <td class="col-xs-3">{{invoiceDTO.note}}</td>
-            <td class="col-xs-1">{{invoiceDTO.invoiceDate}}</td>
-            <td class="col-xs-1">${{invoiceDTO.totalAmount}}</td>
-            <td class="col-xs-1"><button (click)="showInvoiceItemDetails()" class="btn btn-primary">Item Details</button></td>
-            <td class="col-xs-1"><button (click)="toggleInvoiceStatus()" class="btn btn-primary"><span>{{invoiceDTO.status==='Y' || invoiceDTO.status === 'y' ? "Invalidate" : "Validate" }}</span></button></td>
-        </tr>
-    </tbody>
-  </table>
-</div>
+<div class="container">
+ <div class = "jumbotron rounded">
 
-    <div *ngIf="showInvoiceItems == true">
-    <table class="table table-hover table-bordered">
-    <thead>
-        <tr>
-             <th class="col-xs-1">Media Type</th>
-             <th class="col-xs-1">Code</th>
-             <th class="col-xs-2">Title</th>
-             <th class="col-xs-1">Quantity</th>
-             <th class="col-xs-1">Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let invoiceItem of invoiceDTO.invoiceItems; let i = index">
-            <td class="col-xs-1">{{invoiceItem.mediaType}}</td>
-            <td class="col-xs-1">{{invoiceItem.code}}</td>
-            <td class="col-xs-3">{{invoiceItem.title}}</td>
-            <td class="col-xs-1">{{invoiceItem.quantity}}</td>
-            <td class="col-xs-1">${{invoiceItem.price}}</td>
-        </tr>
-    </tbody>
-  </table>
-</div>
+    <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Invoice</h4>
+      </div>
+      <div class="col-xs-6">
+         <input #invoiceIdBox placeholder="Please enter invoice Id" type="text" (keyup.enter)="search(invoiceId)"  [(ngModel)]="invoiceId" name="invoiceId" class="form-control"/>
+      </div>
+      <div class="col-xs-4">
+        <input type="button" (click)="search(invoiceId)" value="Search" class="btn btn-primary">
+      </div>
+
+    </div>
  </div>
+
+ <div class = "jumbotron rounded" *ngIf="invoiceDTO.id > 0">
+    <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">ID</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceDTO.id}}</h4>      
+      </div>
+
+    </div>
+    <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Name</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceDTO.name}}</h4>      
+      </div>
+
+    </div>
+        <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Email</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceDTO.email}}</h4>      
+      </div>
+
+    </div>
+        <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Note</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceDTO.note}}</h4>      
+      </div>
+
+    </div>
+        <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Date</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceDTO.invoiceDate}}</h4>      
+      </div>
+
+    </div>
+        <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Total</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceDTO.totalAmount}}</h4>      
+      </div>
+
+    </div>
+        <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Status</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left"><button (click)="toggleInvoiceStatus()" class="btn btn-primary"><span>{{invoiceDTO.status==='Y' || invoiceDTO.status === 'y' ? "Invalidate" : "Validate" }}</span></button></h4>      
+      </div>
+
+    </div>
+    <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Details</h4>
+      </div>
+      <div class="col-xs-6">
+         <button (click)="showInvoiceItemDetails()" class="btn btn-primary">Item Details</button>      
+      </div>
+
+  </div>
+</div>
+
+<div *ngIf="showInvoiceItems == true">
+  <div *ngFor="let invoiceItem of invoiceDTO.invoiceItems; let i = index" class = "jumbotron rounded">
+     <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Media Type</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceItem.mediaType}}</h4>      
+      </div>
+
+    </div>
+    <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Code</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceItem.code}}</h4>      
+      </div>
+
+    </div>
+        <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Title</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceItem.title}}</h4>      
+      </div>
+
+    </div>
+        <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Quantity</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">{{invoiceItem.quantity}}</h4>      
+      </div>
+
+    </div>
+    <div class="row form-group vertical-align"> 
+
+      <div class="col-xs-2">
+        <h4 class="text-right">Price</h4>
+      </div>
+      <div class="col-xs-6">
+         <h4 class="text-left">${{invoiceItem.price}}</h4>      
+      </div>
+    </div>
+  </div>
+</div>
+ 
